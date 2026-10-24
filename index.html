@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio | Pudim Pudim</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>🍮 Pudim Pudim</h1>
+        <p>Geladões gourmet feitos com carinho!</p>
+    </header>
+
+    <main>
+        <h2>Nosso Cardápio 💗</h2>
+
+        <section class="produtos">
+
+            <article class="produto">
+                <img src="imagens imagens/morango.jpg.jpeg"
+                     alt="Geladão de morango">
+                <h3>Geladão de Morango</h3>
+                <p>Cremoso e delicioso!</p>
+                <p class="preco">R$ 9,00</p>
+
+                <label for="morango">Quantidade:</label>
+                <input type="number" id="morango"
+                       min="0" step="1" value="0">
+
+            </article>
+
+            <article class="produto">
+                <img src="imagens imagens/nutella.jpg.jpeg"
+                     alt="Geladão de Nutella">
+                <h3>Geladão de Nutella</h3>
+                <p>Uma delícia para os amantes de chocolate!</p>
+                <p class="preco">R$ 10,00</p>
+
+                <label for="nutella">Quantidade:</label>
+                <input type="number" id="nutella"
+                       min="0" step="1" value="0">
+
+            </article>
+
+            <article class="produto">
+                <img src="imagens imagens/pudim.jpg.jpeg"
+                     alt="Geladão de pudim">
+                <h3>Geladão de Pudim</h3>
+                <p>Cremoso com calda de caramelo!</p>
+                <p class="preco">R$ 9,00</p>
+
+                <label for="pudim">Quantidade:</label>
+                <input type="number" id="pudim"
+                       min="0" step="1" value="0">
+
+            </article>
+
+        </section>
+
+        <section class="resumo">
+            <h2>🛒 Seu Pedido</h2>
+
+            <p>Morango: <span id="subtotal-morango">R$ 0,00</span></p>
+            <p>Nutella: <span id="subtotal-nutella">R$ 0,00</span></p>
+            <p>Pudim: <span id="subtotal-pudim">R$ 0,00</span></p>
+
+            <h3>Total: R$ <span id="total">0,00</span></h3>
+        </section>
+
+        <section class="formulario">
+            <h2>Seus Dados</h2>
+
+            <form id="formPedido">
+
+                <label for="nome">Nome completo:</label>
+                <input type="text" id="nome" required>
+
+                <label for="telefone">Seu WhatsApp:</label>
+                <input type="tel" id="telefone"
+                       placeholder="(11) 99999-9999" required>
+
+                <label for="data">Data do pedido:</label>
+                <input type="date" id="data" required>
+
+                <label for="horario">Horário desejado:</label>
+                <input type="time" id="horario" required>
+
+                <label for="entrega">Forma de recebimento:</label>
+                <select id="entrega" required>
+                    <option value="Retirada">Retirar no local</option>
+                    <option value="Entrega">Entrega</option>
+                </select>
+
+                <label for="endereco">Endereço para entrega:</label>
+                <input type="text" id="endereco"
+                       placeholder="Rua, número e bairro">
+
+                <label for="observacao">Observações:</label>
+                <textarea id="observacao"
+                          placeholder="Alguma observação?"></textarea>
+
+                <button type="submit">
+                    Enviar pedido pelo WhatsApp
+                </button>
+
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Feito com carinho 💗 Pudim Pudim</p>
+    </footer>
+
+</body>
+</html>
