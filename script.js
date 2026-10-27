@@ -1,7 +1,7 @@
 // WHATSAPP DA LOJA
 const WHATSAPP_LOJA = "5511976691445";
 
-// PREÇOS DOS PRODUTOS
+
 const produtos = {
     morango: {
         nome: "Geladão de Morango",
@@ -27,7 +27,7 @@ function formatarPreco(valor) {
     });
 }
 
-// LÊ AS QUANTIDADES E CALCULA OS SUBTOTAIS
+
 function calcularTotal() {
     let total = 0;
 
@@ -65,7 +65,7 @@ for (const id in produtos) {
     );
 }
 
-// MOSTRA OU OCULTA O CAMPO DE ENDEREÇO
+
 document.getElementById("entrega").addEventListener(
     "change",
     function() {
@@ -80,7 +80,6 @@ document.getElementById("entrega").addEventListener(
     }
 );
 
-// ENVIA O PEDIDO PELO WHATSAPP
 document.getElementById("formPedido").addEventListener(
     "submit",
     function(event) {
@@ -155,5 +154,4 @@ document.getElementById("formPedido").addEventListener(
     }
 );
 
-// CALCULA O TOTAL INICIAL
 calcularTotal();
