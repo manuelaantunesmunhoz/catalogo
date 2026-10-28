@@ -1,157 +1,156 @@
+const numeroWhatsApp = "5511976691445";
 
-const WHATSAPP_LOJA = "5511976691445";
-
-
-const produtos = {
-    morango: {
+// Produtos e preços
+const produtos = [
+    {
+        id: "morango",
         nome: "Geladão de Morango",
-        preco: 9
+        preco: 9.00,
+        subtotalId: "subtotal-morango"
     },
-
-    nutella: {
+    {
+        id: "nutella",
         nome: "Geladão de Nutella",
-        preco: 10
+        preco: 10.00,
+        subtotalId: "subtotal-nutella"
     },
-
-    pudim: {
+    {
+        id: "pudim",
         nome: "Geladão de Pudim",
-        preco: 9
+        preco: 9.00,
+        subtotalId: "subtotal-pudim"
     }
-};
+];
 
-// FORMATA VALORES EM REAIS
-function formatarPreco(valor) {
+// Formata os valores em reais
+function formatarDinheiro(valor) {
     return valor.toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        style: "currency",
+        currency: "BRL"
     });
 }
 
-
-function calcularTotal() {
+// Atualiza os subtotais e o total do pedido
+function atualizarTotal() {
     let total = 0;
 
-    for (const id in produtos) {
-        const campo = document.getElementById(id);
-        let quantidade = Number(campo.value);
+    produtos.forEach(produto => {
+        const campo = document.getElementById(produto.id);
+        const quantidade = campo
+            ? Math.max(0, Number(campo.value) || 0)
+            : 0;
 
-        if (!Number.isFinite(quantidade) || quantidade < 0) {
-            quantidade = 0;
-        }
-
-        if (!Number.isInteger(quantidade)) {
-            quantidade = Math.floor(quantidade);
-        }
-
-        const subtotal = quantidade * produtos[id].preco;
+        const subtotal = quantidade * produto.preco;
         total += subtotal;
 
-        document.getElementById(
-            "subtotal-" + id
-        ).textContent = "R$ " + formatarPreco(subtotal);
-    }
+        const elementoSubtotal =
+            document.getElementById(produto.subtotalId);
 
-    document.getElementById("total").textContent =
-        formatarPreco(total);
+        if (elementoSubtotal) {
+            elementoSubtotal.textContent =
+                formatarDinheiro(subtotal);
+        }
+    });
+
+    const elementoTotal = document.getElementById("total");
+
+    if (elementoTotal) {
+        elementoTotal.textContent = formatarDinheiro(total);
+    }
 
     return total;
 }
 
+// Finaliza o pedido e abre o WhatsApp
+function finalizarPedido(event) {
+    if (event) {
+        event.preventDefault();
+    }
 
-for (const id in produtos) {
-    document.getElementById(id).addEventListener(
-        "input",
-        calcularTotal
-    );
+    const total = atualizarTotal();
+
+    if (total <= 0) {
+        alert("Selecione pelo menos um geladão para fazer seu pedido.");
+        return;
+    }
+
+    const nome =
+        document.getElementById("nome")?.value.trim() || "";
+
+    const telefone =
+        document.getElementById("telefone")?.value.trim() || "";
+
+    const endereco =
+        document.getElementById("endereco")?.value.trim() || "";
+
+    const observacoes =
+        document.getElementById("observacoes")?.value.trim() || "";
+
+    if (!nome || !telefone || !endereco) {
+        alert("Preencha seu nome, telefone e endereço.");
+        return;
+    }
+
+    let mensagem = "Olá! Quero fazer um pedido de geladões.\n\n";
+
+    mensagem += "Nome: " + nome + "\n";
+    mensagem += "Telefone: " + telefone + "\n";
+    mensagem += "Endereço: " + endereco + "\n\n";
+
+    mensagem += "Pedido:\n";
+
+    produtos.forEach(produto => {
+        const campo = document.getElementById(produto.id);
+        const quantidade = campo
+            ? Math.max(0, Number(campo.value) || 0)
+            : 0;
+
+        if (quantidade > 0) {
+            mensagem +=
+                quantidade + "x " + produto.nome + " - " +
+                formatarDinheiro(quantidade * produto.preco) +
+                "\n";
+        }
+    });
+
+    mensagem += "\nTotal: " + formatarDinheiro(total);
+
+    if (observacoes) {
+        mensagem += "\nObservações: " + observacoes;
+    }
+
+    const linkWhatsApp =
+        "https://wa.me/" +
+        numeroWhatsApp +
+        "?text=" +
+        encodeURIComponent(mensagem);
+
+    window.open(linkWhatsApp, "_blank");
 }
 
+// Configura os eventos da página
+document.addEventListener("DOMContentLoaded", function () {
+    produtos.forEach(produto => {
+        const campo = document.getElementById(produto.id);
 
-document.getElementById("entrega").addEventListener(
-    "change",
-    function() {
-        const campoEndereco = document.getElementById("endereco");
-
-        if (this.value === "Entrega") {
-            campoEndereco.required = true;
-        } else {
-            campoEndereco.required = false;
-            campoEndereco.value = "";
+        if (campo) {
+            campo.addEventListener("input", atualizarTotal);
+            campo.addEventListener("change", atualizarTotal);
         }
+    });
+
+    const botao = document.getElementById("finalizarPedido");
+
+    if (botao) {
+        botao.addEventListener("click", finalizarPedido);
     }
-);
 
-document.getElementById("formPedido").addEventListener(
-    "submit",
-    function(event) {
-        event.preventDefault();
+    const formulario =
+        document.getElementById("formularioPedido");
 
-        const total = calcularTotal();
-
-        if (total <= 0) {
-            alert("Escolha pelo menos um geladão!");
-            return;
-        }
-
-        const nome = document.getElementById("nome").value.trim();
-        const telefone = document.getElementById("telefone").value.trim();
-        const data = document.getElementById("data").value;
-        const horario = document.getElementById("horario").value;
-        const entrega = document.getElementById("entrega").value;
-        const endereco = document.getElementById("endereco").value.trim();
-        const observacao = document.getElementById("observacao").value.trim();
-
-        if (!nome || !telefone || !data || !horario) {
-            alert("Preencha todos os dados obrigatórios.");
-            return;
-        }
-
-        if (entrega === "Entrega" && !endereco) {
-            alert("Informe o endereço para a entrega.");
-            return;
-        }
-
-        let mensagem = "🍮 *PEDIDO - PUDIM PUDIM* 🍓\n\n";
-
-        mensagem += `👤 Cliente: ${nome}\n`;
-        mensagem += `📱 WhatsApp do cliente: ${telefone}\n\n`;
-        mensagem += "*PRODUTOS:*\n";
-
-        for (const id in produtos) {
-            const quantidade = Math.max(
-                0,
-                Math.floor(Number(document.getElementById(id).value) || 0)
-            );
-
-            if (quantidade > 0) {
-                const produto = produtos[id];
-                const subtotal = quantidade * produto.preco;
-
-                mensagem +=
-                    `${produto.nome}: ${quantidade} unidade(s) - R$ ${formatarPreco(subtotal)}\n`;
-            }
-        }
-
-        mensagem += `\n💰 *TOTAL: R$ ${formatarPreco(total)}*\n\n`;
-        mensagem += `📅 Data: ${data}\n`;
-        mensagem += `⏰ Horário: ${horario}\n`;
-        mensagem += `📦 Recebimento: ${entrega}\n`;
-
-        if (entrega === "Entrega") {
-            mensagem += `📍 Endereço: ${endereco}\n`;
-        }
-
-        if (observacao) {
-            mensagem += `📝 Observações: ${observacao}\n`;
-        }
-
-        const url =
-            "https://wa.me/" +
-            WHATSAPP_LOJA +
-            "?text=" +
-            encodeURIComponent(mensagem);
-
-        window.open(url, "_blank");
+    if (formulario) {
+        formulario.addEventListener("submit", finalizarPedido);
     }
-);
 
-calcularTotal();
+    atualizarTotal();
+});
