@@ -80,14 +80,10 @@ function finalizarPedido(event) {
     const telefone =
         document.getElementById("telefone")?.value.trim() || "";
 
-    const endereco =
-        document.getElementById("endereco")?.value.trim() || "";
+    
 
-    const observacoes =
-        document.getElementById("observacoes")?.value.trim() || "";
-
-    if (!nome || !telefone || !endereco) {
-        alert("Preencha seu nome, telefone e endereço.");
+    if (!nome || !telefone ) {
+        alert("Preencha seu nome e telefone.");
         return;
     }
 
@@ -95,7 +91,7 @@ function finalizarPedido(event) {
 
     mensagem += "Nome: " + nome + "\n";
     mensagem += "Telefone: " + telefone + "\n";
-    mensagem += "Endereço: " + endereco + "\n\n";
+    
 
     mensagem += "Pedido:\n";
 
@@ -115,9 +111,7 @@ function finalizarPedido(event) {
 
     mensagem += "\nTotal: " + formatarDinheiro(total);
 
-    if (observacoes) {
-        mensagem += "\nObservações: " + observacoes;
-    }
+    
 
     const linkWhatsApp =
         "https://wa.me/" +
