@@ -19,6 +19,13 @@ const produtos = [
         nome: "Geladão de Pudim",
         preco: 9.00,
         subtotalId: "subtotal-pudim"
+    },
+    {
+        id: "kitkat" ,
+        nome: "Geladão de kitkat com Ninho" ,
+        preco: 12.00,
+        subtotalId: "subtotal-kitkat"
+
     }
 ];
 

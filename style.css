@@ -233,3 +233,7 @@ header h1 {
     color: #ffffff;
     text-align: center;
 }
+
+.produto img[alt*="KitKat"] {
+    transform: scale(2.35);
+}
